@@ -72,8 +72,7 @@ class LocationActivity : AppCompatActivity() {
     private fun startLocationUpdate() {
         locationViewModel.getLocationData().observe(this, {
             Log.v("getLatLong", it.latitude.toString() + " " + it.longitude + " " + it.accuracy)
-            latLong.text =
-                getString(R.string.latLong, it.longitude, it.latitude) + " " + it.accuracy
+            latLong.text = "Latitude: ${it.latitude} \nLongitude: ${it.longitude} \nAccuracy: ${it.accuracy} \nSatellite Count: TODO"
         })
     }
 

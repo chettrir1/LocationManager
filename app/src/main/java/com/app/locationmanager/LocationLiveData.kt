@@ -23,12 +23,12 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
     @SuppressLint("MissingPermission")
     override fun onActive() {
         super.onActive()
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                location?.also {
-                    setLocationData(it)
-                }
-            }
+        /*  fusedLocationClient.lastLocation
+              .addOnSuccessListener { location: Location? ->
+                  location?.also {
+                      setLocationData(it)
+                  }
+              }*/
         startLocationUpdates()
     }
 
@@ -37,14 +37,18 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
-            Looper.myLooper()!!
+            Looper.getMainLooper()
         )
     }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
-            setLocationData(locationResult.lastLocation)
+//            setLocationData(locationResult.lastLocation)
+            println("LocationSize -> ${locationResult.locations.size}")
+            locationResult.locations.forEach {
+                setLocationData(it)
+            }
         }
     }
 
