@@ -2,4 +2,5 @@
     <string name="app_name">LocationManager</string>
     <string name="enable_gps">Please enable your gps</string>
     <string name="permission_request">App requires location permission</string>
+    <string name="fetching_location">Fetching Location…</string>
 </resources>

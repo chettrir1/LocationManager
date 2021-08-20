@@ -49,9 +49,14 @@ class LocationActivity : AppCompatActivity() {
 
     private fun invokeLocationAction() {
         when {
-            !isGPSEnabled -> latLong.text = getString(R.string.enable_gps)
+            !isGPSEnabled -> {
+                latLong.text = getString(R.string.enable_gps)
+            }
 
-            isPermissionsGranted() -> startLocationUpdate()
+            isPermissionsGranted() ->  {
+                latLong.text = getString(R.string.fetching_location)
+                startLocationUpdate()
+            }
 
             shouldShowRequestPermissionRationale() -> latLong.text =
                 getString(R.string.permission_request)
@@ -72,7 +77,7 @@ class LocationActivity : AppCompatActivity() {
         locationViewModel.getLocationData().observe(this, {
             Log.v("getLatLong", it.latitude.toString() + " " + it.longitude + " " + it.accuracy)
             latLong.text =
-                "Latitude: ${it.latitude} \nLongitude: ${it.longitude} \nAccuracy: ${it.accuracy} \nSatellite Count: ${it.satellite}"
+                "Latitude: ${it.latitude} \nLongitude: ${it.longitude} \nAccuracy: ${it.accuracy}m \nSpeed: ${it.speed}\nBearing:${it.bearing}\nAltitude:${it.altitude}"
         })
     }
 
