@@ -19,16 +19,9 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-
     @SuppressLint("MissingPermission")
     override fun onActive() {
         super.onActive()
-        /*  fusedLocationClient.lastLocation
-              .addOnSuccessListener { location: Location? ->
-                  location?.also {
-                      setLocationData(it)
-                  }
-              }*/
         startLocationUpdates()
     }
 
@@ -44,8 +37,6 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
-//            setLocationData(locationResult.lastLocation)
-            println("LocationSize -> ${locationResult.locations.size}")
             locationResult.locations.forEach {
                 setLocationData(it)
             }
@@ -59,7 +50,8 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
             altitude = location.altitude,
             accuracy = location.accuracy,
             speed = location.speed,
-            bearing = location.bearing
+            bearing = location.bearing,
+            satellite = location.extras.getInt("satellites")
         )
     }
 
@@ -81,5 +73,6 @@ data class LocationModel(
     val altitude: Double,
     val accuracy: Float,
     val speed: Float,
-    val bearing: Float
+    val bearing: Float,
+    val satellite: Int
 )

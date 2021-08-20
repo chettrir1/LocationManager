@@ -19,7 +19,6 @@ class LocationActivity : AppCompatActivity() {
     private lateinit var locationViewModel: LocationViewModel
     private var isGPSEnabled = false
 
-    private var interval: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
@@ -72,7 +71,8 @@ class LocationActivity : AppCompatActivity() {
     private fun startLocationUpdate() {
         locationViewModel.getLocationData().observe(this, {
             Log.v("getLatLong", it.latitude.toString() + " " + it.longitude + " " + it.accuracy)
-            latLong.text = "Latitude: ${it.latitude} \nLongitude: ${it.longitude} \nAccuracy: ${it.accuracy} \nSatellite Count: TODO"
+            latLong.text =
+                "Latitude: ${it.latitude} \nLongitude: ${it.longitude} \nAccuracy: ${it.accuracy} \nSatellite Count: ${it.satellite}"
         })
     }
 
