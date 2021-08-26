@@ -10,9 +10,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
+
 class LocationLiveData(context: Context) : LiveData<LocationModel>() {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private var mCurrentBestLocation: Location? = null
 
     override fun onInactive() {
         super.onInactive()
@@ -22,6 +24,12 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
     @SuppressLint("MissingPermission")
     override fun onActive() {
         super.onActive()
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                location?.also {
+                    mCurrentBestLocation = it
+                }
+            }
         startLocationUpdates()
     }
 
@@ -38,7 +46,8 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
             locationResult.locations.forEach {
-                setLocationData(it)
+                if (LocationUtils.isBetterLocation(it, mCurrentBestLocation))
+                    setLocationData(it)
             }
         }
     }
